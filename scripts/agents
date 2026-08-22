@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Print a table of harness agents. Alive (idle/running) by default.
+#   harness-agents          alive only
+#   harness-agents -a       include terminated
+#   harness-agents --json   raw JSON from the API
+set -euo pipefail
+
+PORT="${HARNESS_PORT:-3000}"
+ENV_FILE="${HARNESS_ENV:-/home/vibe10/projects/harness/.env}"
+if [[ -z "${HARNESS_PORT:-}" && -r "$ENV_FILE" ]]; then
+  p=$(grep -E '^HARNESS_PORT=' "$ENV_FILE" | tail -1 | cut -d= -f2 | tr -d '[:space:]')
+  [[ -n "$p" ]] && PORT="$p"
+fi
+
+ALL=0
+JSON=0
+for arg in "$@"; do
+  case "$arg" in
+    -a|--all)   ALL=1 ;;
+    --json)     JSON=1 ;;
+    -h|--help)  sed -n '2,6p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *)          echo "unknown option: $arg (try --help)" >&2; exit 2 ;;
+  esac
+done
+
+body=$(curl -sS --max-time 10 "localhost:${PORT}/api/agents" 2>&1) || {
+  echo "harness API unreachable on localhost:${PORT}" >&2
+  echo "  systemctl is-active harness.service -> $(systemctl is-active harness.service 2>&1)" >&2
+  exit 1
+}
+
+if (( JSON )); then printf '%s\n' "$body"; exit 0; fi
+
+printf '%s' "$body" | ALL="$ALL" python3 -c '
+import sys, os, json, time
+
+try:
+    d = json.load(sys.stdin)
+except json.JSONDecodeError:
+    sys.exit("harness API returned non-JSON (is something else on this port?)")
+
+rows = d if isinstance(d, list) else d.get("agents", [])
+show_all = os.environ.get("ALL") == "1"
+agents = rows if show_all else [a for a in rows if a.get("status") != "terminated"]
+
+def age(ms):
+    if not ms:
+        return "?"
+    m = int((time.time() * 1000 - ms) / 60000)
+    if m < 60:
+        return f"{m}m"
+    h, m = divmod(m, 60)
+    return f"{h}h{m:02d}m" if h < 48 else f"{h // 24}d"
+
+table = [(
+    a.get("status", "?"),
+    a.get("name", "?"),
+    a.get("id", "?"),
+    "yes" if a.get("standing") else "no",
+    age(a.get("updated_at") or a.get("updatedAt")),
+) for a in agents]
+
+# running first, then idle, then the rest; newest activity first within a group
+order = {"running": 0, "idle": 1}
+table.sort(key=lambda r: (order.get(r[0], 2), r[1]))
+
+head = ("STATUS", "NAME", "ID", "STANDING", "LAST ACTIVITY")
+w = [max(len(h), *(len(r[i]) for r in table)) if table else len(h)
+     for i, h in enumerate(head)]
+line = lambda r: "  ".join(c.ljust(w[i]) for i, c in enumerate(r)).rstrip()
+
+print(line(head))
+print("  ".join("-" * n for n in w))
+for r in table:
+    print(line(r))
+
+n_alive = sum(1 for a in rows if a.get("status") != "terminated")
+n_term = len(rows) - n_alive
+if not table:
+    print("(none)")
+print(f"\nalive: {n_alive}   terminated: {n_term}   total rows: {len(rows)}")
+'

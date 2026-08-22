@@ -1,0 +1,2 @@
+baseline content for file-watch test
+change

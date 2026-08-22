@@ -1,0 +1,2 @@
+[{"id":"S01","bucket":"A","question":"What is the length of the Danube river in kilometers?","truth":2850,"unit":"km"},
+ {"id":"S02","bucket":"B","question":"What was the closing price of Apple (AAPL, NASDAQ) in USD on 2026-07-15?","truth":230,"unit":"USD"}]

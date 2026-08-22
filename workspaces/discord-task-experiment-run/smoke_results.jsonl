@@ -1,0 +1,10 @@
+{"model": "claude-haiku-4-5", "qid": "S01", "bucket": "A", "level": 0, "direction": "point", "X": 2857.0, "truth": 2850, "retried": false, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S01", "bucket": "A", "level": 80, "direction": "upper", "X": 2885.0, "truth": 2850, "retried": false, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S01", "bucket": "A", "level": 95, "direction": "lower", "X": 2800.0, "truth": 2850, "retried": false, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S01", "bucket": "A", "level": 95, "direction": "upper", "X": 2920.0, "truth": 2850, "retried": false, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S01", "bucket": "A", "level": 80, "direction": "lower", "X": 2842.0, "truth": 2850, "retried": false, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S02", "bucket": "B", "level": 80, "direction": "upper", "X": 295.0, "truth": 230, "retried": false, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S02", "bucket": "B", "level": 95, "direction": "upper", "X": 275.0, "truth": 230, "retried": false, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S02", "bucket": "B", "level": 80, "direction": "lower", "X": 190.0, "truth": 230, "retried": true, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S02", "bucket": "B", "level": 95, "direction": "lower", "X": 115.0, "truth": 230, "retried": false, "raw_tail": null}
+{"model": "claude-haiku-4-5", "qid": "S02", "bucket": "B", "level": 0, "direction": "point", "X": 225.0, "truth": 230, "retried": true, "raw_tail": null}

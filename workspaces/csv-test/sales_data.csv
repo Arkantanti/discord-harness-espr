@@ -1,0 +1,11 @@
+order_id,date,customer,product,quantity,unit_price,total
+1001,2026-07-01,Acme Corp,Widget A,5,19.99,99.95
+1002,2026-07-03,Globex,Widget B,2,49.50,99.00
+1003,2026-07-05,Initech,Gadget X,10,7.25,72.50
+1004,2026-07-08,Umbrella LLC,Widget A,3,19.99,59.97
+1005,2026-07-11,Stark Industries,Gizmo Pro,1,299.00,299.00
+1006,2026-07-14,Wayne Enterprises,Widget B,7,49.50,346.50
+1007,2026-07-17,Hooli,Gadget X,4,7.25,29.00
+1008,2026-07-20,Pied Piper,Gizmo Pro,2,299.00,598.00
+1009,2026-07-24,Aperture Labs,Widget A,6,19.99,119.94
+1010,2026-07-28,Tyrell Corp,Widget B,1,49.50,49.50

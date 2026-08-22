@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>harness</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="sidebar">
+  <div id="side-head">
+    <h1>harness</h1>
+    <button id="btn-spawn" title="Spawn a new agent">+ agent</button>
+  </div>
+  <div id="agent-list"></div>
+</div>
+
+<div id="main">
+  <div id="empty-state">select or spawn an agent</div>
+  <div id="agent-view" hidden>
+    <div id="agent-head">
+      <div>
+        <span id="ah-dot" class="dot"></span>
+        <span id="ah-name"></span>
+        <span id="ah-id" class="muted"></span>
+      </div>
+      <div id="ah-meta" class="muted"></div>
+      <div id="ah-actions">
+        <button id="btn-watchers">watchers</button>
+        <button id="btn-retry" hidden>retry</button>
+        <button id="btn-terminate" class="danger">terminate</button>
+      </div>
+    </div>
+    <div id="watcher-panel" hidden>
+      <div id="watcher-list"></div>
+      <form id="watcher-form">
+        <select id="wf-type"></select>
+        <input id="wf-name" placeholder="name (optional)">
+        <input id="wf-config" placeholder='config JSON, e.g. {"delay_ms":600000,"message":"check build"}'>
+        <button>add watcher</button>
+      </form>
+    </div>
+    <div id="transcript"></div>
+    <form id="composer">
+      <textarea id="msg-input" rows="2" placeholder="message this agent… (Enter to send, Shift+Enter for newline)"></textarea>
+      <button>send</button>
+    </form>
+  </div>
+</div>
+
+<dialog id="spawn-dialog">
+  <form id="spawn-form" method="dialog">
+    <h2>spawn agent</h2>
+    <input id="sf-name" placeholder="name (kebab-case)" required>
+    <textarea id="sf-prompt" rows="5" placeholder="first message / task" required></textarea>
+    <input id="sf-model" placeholder="model (optional, e.g. claude-sonnet-5)">
+    <textarea id="sf-system" rows="2" placeholder="extra system prompt (optional)"></textarea>
+    <div class="row">
+      <button type="button" id="sf-cancel">cancel</button>
+      <button type="submit" value="ok">spawn</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
